@@ -4,7 +4,7 @@ import Avatar from '@/components/ui/Avatar'
 import Dropdown from '@/components/ui/Dropdown'
 import withHeaderItem from '@/utils/hoc/withHeaderItem'
 import Link from 'next/link'
-import signOut from '@/server/actions/auth/handleSignOut'
+import { useAuth } from '@/contexts/AuthContext'
 import useCurrentSession from '@/utils/hooks/useCurrentSession'
 import { PiUserDuotone, PiSignOutDuotone } from 'react-icons/pi'
 
@@ -20,10 +20,7 @@ const dropdownItemList: DropdownList[] = []
 
 const _UserDropdown = () => {
     const { session } = useCurrentSession()
-
-    const handleSignOut = async () => {
-        await signOut()
-    }
+    const { signOut } = useAuth()
 
     const avatarProps = {
         ...(session?.user?.image
@@ -73,7 +70,7 @@ const _UserDropdown = () => {
             <Dropdown.Item
                 eventKey="Sign Out"
                 className="gap-2"
-                onClick={handleSignOut}
+                onClick={() => signOut()}
             >
                 <span className="text-xl">
                     <PiSignOutDuotone />

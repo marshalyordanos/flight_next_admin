@@ -1,13 +1,16 @@
 import axios from 'axios'
 import AxiosResponseIntrceptorErrorCallback from './AxiosResponseIntrceptorErrorCallback'
 import AxiosRequestIntrceptorConfigCallback from './AxiosRequestIntrceptorConfigCallback'
-import appConfig from '@/configs/app.config'
+// import appConfig from '@/configs/app.config'
 import type { AxiosError } from 'axios'
 
 const AxiosBase = axios.create({
     timeout: 60000,
-    baseURL: appConfig.apiPrefix,
-    withCredentials: true,
+    baseURL: 'https://flight.yonashalefom.com/api/v1',
+    // withCredentials: true,
+    headers: {
+        'x-api-key': 'v8VB0yY887lMpTA2VJMV:zeZbtGTugBTn3Qd5UXtSZBwt7gn3bg',
+    },
 })
 
 AxiosBase.interceptors.request.use(

@@ -3,15 +3,57 @@ export type SignInCredential = {
     password: string
 }
 
-export type SignInResponse = {
-    token: string
-    user: {
-        userId: string
-        userName: string
-        authority: string[]
-        avatar: string
-        email: string
-    }
+export type AuthLoginResponse = {
+    tokenType: string
+    roleType: string
+    expiresIn: number
+    accessToken: string
+    refreshToken: string
+}
+
+export type ApiPermission = {
+    subject: string
+    action: string[]
+}
+
+export type ApiRole = {
+    _id: string
+    name: string
+    isActive: boolean
+    type: string
+    permissions: ApiPermission[] | number
+}
+
+export type ApiCountry = {
+    _id: string
+    name: string
+    alpha2Code: string
+    phoneCode: string[]
+    timeZone: string
+    currency: string
+}
+
+export type UserProfile = {
+    _id: string
+    name: string
+    username: string
+    email: string
+    status: string
+    gender?: string
+    role: ApiRole
+    country?: ApiCountry
+    verification?: { email: boolean; mobileNumber: boolean }
+    passwordExpired?: string
+    passwordCreated?: string
+    signUpDate?: string
+    signUpFrom?: string
+}
+
+export type ApiResponse<T> = {
+    statusCode: number
+    message: string
+    _metadata?: Record<string, unknown>
+    data: T
 }
 
 export type SignUpResponse = {
@@ -52,7 +94,7 @@ export type User = {
 
 export type Token = {
     accessToken: string
-    refereshToken?: string
+    refreshToken?: string
 }
 
 export type OauthSignInCallbackPayload = {

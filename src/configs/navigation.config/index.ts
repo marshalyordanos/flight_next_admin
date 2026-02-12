@@ -17,6 +17,16 @@ const navigationConfig: NavigationTree[] = [
         authority: [],
         subMenu: [],
     },
+    {
+        key: 'roles',
+        path: '/roles',
+        title: 'Roles',
+        translateKey: 'nav.roles',
+        icon: 'users',
+        type: NAV_ITEM_TYPE_ITEM,
+        authority: [],
+        subMenu: [],
+    },
     /** Example purpose only, please remove */
     {
         key: 'singleMenuItem',

@@ -1,9 +1,13 @@
 import type { InternalAxiosRequestConfig } from 'axios'
+import { tokenStorage } from '@/utils/storage'
 
 const AxiosRequestIntrceptorConfigCallback = (
     config: InternalAxiosRequestConfig,
 ) => {
-    /** handle config mutatation here before request to server */
+    const token = tokenStorage.getAccessToken()
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
     return config
 }
 

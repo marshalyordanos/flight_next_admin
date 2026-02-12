@@ -1,0 +1,21 @@
+{
+    "nav": {
+        "home": "Home",
+        "roles": "Roles",
+        "singleMenuItem": "Single menu item",
+        "collapseMenu": {
+            "collapseMenu": "Collapse Menu",
+            "item1": "Collapse menu item 1",
+            "item2": "Collapse menu item 2"
+        },
+        "groupMenu": {
+            "groupMenu": "Group Menu",
+            "single": "Group single menu item",
+            "collapse": {
+                "collapse": "Group collapse menu",
+                "item1": "Menu item 1",
+                "item2": "Menu item 2"
+            }
+        }
+    }
+}

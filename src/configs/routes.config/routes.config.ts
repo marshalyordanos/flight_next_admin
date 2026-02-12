@@ -10,6 +10,31 @@ export const protectedRoutes: Routes = {
             pageContainerType: 'contained',
         },
     },
+    '/roles': {
+        key: 'roles',
+        authority: [],
+        meta: {
+            pageBackgroundType: 'plain',
+            pageContainerType: 'contained',
+        },
+    },
+    '/roles/create': {
+        key: 'rolesCreate',
+        authority: [],
+        meta: {
+            pageBackgroundType: 'plain',
+            pageContainerType: 'contained',
+        },
+    },
+    '/roles/[id]/edit': {
+        key: 'rolesEdit',
+        authority: [],
+        dynamicRoute: true,
+        meta: {
+            pageBackgroundType: 'plain',
+            pageContainerType: 'contained',
+        },
+    },
     '/page': {
         key: 'page',
         authority: [],

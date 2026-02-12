@@ -1,14 +1,23 @@
-import { useContext } from 'react'
-import SessionContext from '@/components/auth/AuthProvider/SessionContext'
+import { useAuth } from '@/contexts/AuthContext'
 
 const useCurrentSession = () => {
-    const context = useContext(SessionContext)
+    const { user, isLoading } = useAuth()
 
     return {
-        session: context || {
-            expires: '',
-            user: {},
-        },
+        session: user
+            ? {
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    image: undefined,
+                    authority: user.role ? [user.role.type] : [],
+                },
+                expires: '',
+            }
+            : { expires: '', user: {} },
+        user,
+        isLoading,
     }
 }
 
