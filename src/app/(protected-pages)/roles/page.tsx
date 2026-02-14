@@ -264,12 +264,7 @@ const RolesPage = () => {
                         total: pagination.total,
                         pageIndex: pagination.page,
                         pageSize: pagination.perPage,
-                        totalPage: pagination.totalPage,
-                        onPageChange: (page: number) => {
-                            setPagination((p) => ({ ...p, page }))
-                        },
                     }}
-                    pageCount={pagination.totalPage}
                     onPaginationChange={(page) =>
                         setPagination((p) => ({ ...p, page }))
                     }

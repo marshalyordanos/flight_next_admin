@@ -15,7 +15,20 @@ const AxiosResponseIntrceptorErrorCallback = (error: AxiosError) => {
         }
     }
 
-    console.error('API Error:', error.response?.data ?? error.message)
+    const errorData = error.response?.data
+    let errorMessage: string
+    if (typeof errorData === 'object' && errorData !== null) {
+        try {
+            const str = JSON.stringify(errorData)
+            errorMessage = str === '{}' ? error.message ?? 'Unknown error' : str
+        } catch {
+            errorMessage = error.message ?? 'Unknown error'
+        }
+    } else {
+        errorMessage =
+            (errorData as string) ?? error.message ?? 'Unknown error'
+    }
+    console.error('API Error:', errorMessage)
 }
 
 export default AxiosResponseIntrceptorErrorCallback

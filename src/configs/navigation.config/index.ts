@@ -27,6 +27,26 @@ const navigationConfig: NavigationTree[] = [
         authority: [],
         subMenu: [],
     },
+    {
+        key: 'users',
+        path: '/users/user-list',
+        title: 'Users',
+        translateKey: 'nav.users',
+        icon: 'users',
+        type: NAV_ITEM_TYPE_ITEM,
+        authority: [],
+        subMenu: [],
+    },
+    {
+        key: 'profile',
+        path: '/profile',
+        title: 'Profile',
+        translateKey: 'nav.profile',
+        icon: 'user',
+        type: NAV_ITEM_TYPE_ITEM,
+        authority: [],
+        subMenu: [],
+    },
     /** Example purpose only, please remove */
     {
         key: 'singleMenuItem',

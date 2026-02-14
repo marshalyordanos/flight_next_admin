@@ -1,4 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
 import { AuthProvider } from '@/contexts/AuthContext'
 import ThemeProvider from '@/components/template/Theme/ThemeProvider'
 import pageMetaConfig from '@/configs/page-meta.config'
@@ -21,6 +22,7 @@ export default async function RootLayout({
     const navigationTree = await getNavigation()
     const theme = await getTheme()
     const locale = await getLocale()
+    const messages = await getMessages()
 
     return (
         <html
@@ -30,7 +32,7 @@ export default async function RootLayout({
             suppressHydrationWarning
         >
             <body suppressHydrationWarning>
-                <NextIntlClientProvider>
+                <NextIntlClientProvider messages={messages} locale={locale}>
                     <ThemeProvider theme={theme}>
                         <AuthProvider>
                             <NavigationProvider navigationTree={navigationTree}>
