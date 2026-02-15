@@ -59,7 +59,7 @@ const SignIn = ({
                 }
                 onSignIn={onSignIn}
             />
-            <div className="mt-8">
+            {/* <div className="mt-8">
                 <div className="mt-6 text-center">
                     <span>{`Don't have an account yet?`} </span>
                     <ActionLink
@@ -70,7 +70,7 @@ const SignIn = ({
                         Sign up
                     </ActionLink>
                 </div>
-            </div>
+            </div> */}
         </>
     )
 }

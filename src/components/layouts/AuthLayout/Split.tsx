@@ -18,12 +18,11 @@ const Split = ({ children, content, ...rest }: SplitProps) => {
                     />
                     <div className="text-center max-w-[550px]">
                         <h1 className="text-neutral">
-                            The easiest way to build your admin app
+                            Flight App Admin Panel
                         </h1>
                         <p className="text-neutral opacity-80 mx-auto mt-8 font-semibold">
-                            Experience seamless project management with Ecme.
-                            Simplify your workflow, and achieve your goals
-                            efficiently with our powerful and intuitive tools.
+                            Manage all aspects of your flight booking application with ease. 
+                            Oversee bookings, flights, users, and more from a single, powerful admin platform tailored for the Flight App.
                         </p>
                     </div>
                 </div>
