@@ -4,6 +4,7 @@
         "roles": "Roles",
         "users": "Users",
         "profile": "Profile",
+        "configuration": "Configuration",
         "singleMenuItem": "Single menu item",
         "collapseMenu": {
             "collapseMenu": "Collapse Menu",

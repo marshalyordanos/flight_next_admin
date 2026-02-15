@@ -40,11 +40,23 @@ const Tag = ({ color = "blue", icon, children }: { color?: string, icon?: React.
 )
 
 type ProfileContentProps = {
-    initialData: User | null
+    initialData?: User | null
 }
 
-const ProfileContent = ({ initialData }: ProfileContentProps) => {
+const ProfileContent = ({ initialData = null }: ProfileContentProps) => {
     const [profileData, setProfileData] = useState<User | null>(initialData)
+    const [loading, setLoading] = useState(!initialData)
+
+    useEffect(() => {
+        if (!initialData) {
+            setLoading(true)
+            userService
+                .getProfile()
+                .then((res) => setProfileData(res.data))
+                .catch(() => setProfileData(null))
+                .finally(() => setLoading(false))
+        }
+    }, [initialData])
     const [isEditing, setIsEditing] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -99,6 +111,15 @@ const ProfileContent = ({ initialData }: ProfileContentProps) => {
         } finally {
             setIsSubmitting(false)
         }
+    }
+
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center py-16">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
+                <p className="text-gray-500 mt-4">Loading profile...</p>
+            </div>
+        )
     }
 
     if (!profileData) {

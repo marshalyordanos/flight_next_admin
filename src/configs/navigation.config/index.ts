@@ -37,6 +37,16 @@ const navigationConfig: NavigationTree[] = [
         authority: [],
         subMenu: [],
     },
+    {
+        key: 'configuration',
+        path: '/configuration',
+        title: 'Configuration',
+        translateKey: 'nav.configuration',
+        icon: 'collapseMenu',
+        type: NAV_ITEM_TYPE_ITEM,
+        authority: [],
+        subMenu: [],
+    },
     // {
     //     key: 'profile',
     //     path: '/profile',

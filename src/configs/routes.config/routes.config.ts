@@ -108,8 +108,17 @@ export const protectedRoutes: Routes = {
             },
         },
     },
-
-
+    '/configuration': {
+        key: 'configuration',
+        authority: [],
+        meta: {
+            header: {
+                title: 'Configuration',
+                description: 'Manage markup rate and tax rate',
+                contained: true,
+            },
+        },
+    },
 }
 
 export const publicRoutes: Routes = {}
