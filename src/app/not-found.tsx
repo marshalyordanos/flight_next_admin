@@ -7,7 +7,7 @@ import appConfig from '@/configs/app.config'
 
 export default function NotFound() {
     return (
-        <div className="flex flex-auto flex-col h-[100vh]">
+        <div className="flex flex-auto flex-col ">
             <div className="h-full bg-white dark:bg-gray-800">
                 <Container className="flex flex-col flex-auto items-center justify-center min-w-0 h-full">
                     <div className="min-w-[320px] md:min-w-[500px] max-w-[500px]">

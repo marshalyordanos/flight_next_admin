@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useCallback } from 'react'
-import Avatar from '@/components/ui/Avatar'
+// import Avatar from '@/components/ui/Avatar'
 import Tag from '@/components/ui/Tag'
 import Tooltip from '@/components/ui/Tooltip'
 import DataTable from '@/components/shared/DataTable'
