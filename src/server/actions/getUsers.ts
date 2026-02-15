@@ -7,6 +7,7 @@ const getUsers = async (queryParams: {
 }) => {
     const page = parseInt((queryParams.pageIndex as string) || '1')
     const perPage = parseInt((queryParams.pageSize as string) || '10')
+    const roleType = (queryParams.roleType as string) || ''
     const search =
         (queryParams.search as string) ||
         (queryParams.query as string) ||
@@ -30,6 +31,7 @@ const getUsers = async (queryParams: {
         orderBy,
         orderDirection,
         accessToken,
+        roleType: roleType.split(','),
     })
 
     return {
