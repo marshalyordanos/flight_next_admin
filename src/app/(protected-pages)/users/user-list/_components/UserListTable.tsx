@@ -26,8 +26,8 @@ const statusColor: Record<string, string> = {
 
 const NameColumn = ({ row }: { row: User }) => {
     return (
-        <div className="flex items-center">
-            <Avatar size={40} shape="circle" />
+        <div className="flex  items-center">
+            {/* <Avatar size={40} shape="circle" /> */}
             <Link
                 className="hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100"
                 href={`/users/user-details/${row._id}`}

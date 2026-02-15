@@ -40,7 +40,8 @@ const _UserDropdown = () => {
             placement="bottom-end"
         >
             <Dropdown.Item variant="header">
-                <div className="py-2 px-3 flex items-center gap-3">
+             <Link className="cursor-pointer border-none" href="/profile">  
+             <div className="py-2 px-3 flex items-center gap-3">
                     <Avatar {...avatarProps} />
                     <div>
                         <div className="font-bold text-gray-900 dark:text-gray-100">
@@ -51,6 +52,7 @@ const _UserDropdown = () => {
                         </div>
                     </div>
                 </div>
+                </Link> 
             </Dropdown.Item>
             <Dropdown.Item variant="divider" />
             {dropdownItemList.map((item) => (

@@ -35,6 +35,7 @@ export type UserListParams = {
     orderDirection?: 'asc' | 'desc'
     search?: string
     accessToken?: string
+    roleType?: string[]
 }
 
 export type UpdateProfilePayload = {
@@ -52,7 +53,7 @@ export const userService = {
         if (params?.orderDirection)
             searchParams.set('orderDirection', params.orderDirection)
         if (params?.search) searchParams.set('search', params.search)
-
+        if (params?.roleType) searchParams.set('roleType', params.roleType.join(','))
         const query = searchParams.toString()
         const url = `/admin/user/list${query ? `?${query}` : ''}`
 

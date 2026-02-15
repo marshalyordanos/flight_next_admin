@@ -99,7 +99,7 @@ const UserEdit = ({ data }: UserEditProps) => {
                 onFormSubmit={handleFormSubmit}
             >
                 <Container>
-                    <div className="flex items-center justify-between px-8">
+                    <div className="flex items-center mt-4 justify-between px-8">
                         <Button
                             className="ltr:mr-3 rtl:ml-3"
                             type="button"

@@ -18,13 +18,23 @@ type FormSchema = {
     search: string
     orderBy: string
     orderDirection: string
+    roleType?: string[]
 }
 
 const validationSchema: ZodType<FormSchema> = z.object({
     search: z.string(),
     orderBy: z.string(),
     orderDirection: z.string(),
+    roleType: z.array(z.string()).optional().default([]),
 })
+
+const STATIC_ROLE_OPTIONS = [
+    { value: 'ADMIN', label: 'ADMIN' },
+    { value: 'SALES_AGENT', label: 'SALES_AGENT' },
+    { value: 'SUPER_ADMIN', label: 'SUPER_ADMIN' },
+    { value: 'SUB_ADMIN', label: 'SUB_ADMIN' },
+    { value: 'USER', label: 'USER' },
+]
 
 const UserListTableFilter = () => {
     const [dialogIsOpen, setIsOpen] = useState(false)
@@ -47,6 +57,7 @@ const UserListTableFilter = () => {
             search: filterData.query || '',
             orderBy: filterData.orderBy || 'createdAt',
             orderDirection: filterData.orderDirection || 'asc',
+            roleType: filterData.roleType || [],
         },
         resolver: zodResolver(validationSchema),
     })
@@ -56,6 +67,7 @@ const UserListTableFilter = () => {
             search: values.search,
             orderBy: values.orderBy,
             orderDirection: values.orderDirection,
+            roleType: values.roleType && values.roleType.length > 0 ? values.roleType.join(',') : '',
             pageIndex: '1',
         })
 
@@ -63,6 +75,7 @@ const UserListTableFilter = () => {
             query: values.search,
             orderBy: values.orderBy,
             orderDirection: values.orderDirection,
+            roleType: values.roleType,
         })
         setIsOpen(false)
     }
@@ -133,6 +146,30 @@ const UserListTableFilter = () => {
                                         onChange={(option) =>
                                             field.onChange(option?.value)
                                         }
+                                    />
+                                )
+                            }}
+                        />
+                    </FormItem>
+                    <FormItem label="Role Type">
+                        <Controller
+                            name="roleType"
+                            control={control}
+                            render={({ field }) => {
+                                return (
+                                    <Select
+                                        options={STATIC_ROLE_OPTIONS}
+                                        isMulti
+                                        placeholder="Select Role(s)"
+                                        value={STATIC_ROLE_OPTIONS.filter(option =>
+                                            field.value?.includes(option.value)
+                                        )}
+                                        onChange={(selected) => {
+                                            const selectedArr = Array.isArray(selected)
+                                                ? selected.map((opt) => opt.value)
+                                                : []
+                                            field.onChange(selectedArr)
+                                        }}
                                     />
                                 )
                             }}

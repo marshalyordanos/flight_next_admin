@@ -5,6 +5,9 @@ export const initialFilterData: Filter = {
     query: '',
     orderBy: 'createdAt',
     orderDirection: 'asc',
+    roleType: [],
+
+
 }
 
 export type UserListState = {

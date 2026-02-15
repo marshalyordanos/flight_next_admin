@@ -13,6 +13,15 @@ const AxiosBase = axios.create({
     },
 })
 
+const AdminAxiosBase = axios.create({
+    timeout: 60000,
+    baseURL: 'https://flight.yonashalefom.com/api/v1',
+    // withCredentials: true,
+    headers: {
+        'x-api-key': 'OgXYkQyOtP7Zl5uCbKd8:3kh0hW7pIAH3wW9DwUGrP8Y5RW9Ywv',
+    },
+})
+
 AxiosBase.interceptors.request.use(
     (config) => {
         return AxiosRequestIntrceptorConfigCallback(config)
@@ -29,5 +38,24 @@ AxiosBase.interceptors.response.use(
         return Promise.reject(error)
     },
 )
+
+AdminAxiosBase.interceptors.request.use(
+    (config) => {
+        return AxiosRequestIntrceptorConfigCallback(config)
+    },
+    (error) => {
+        return Promise.reject(error)
+    },
+)
+
+AdminAxiosBase.interceptors.response.use(
+    (response) => response,
+    (error: AxiosError) => {
+        AxiosResponseIntrceptorErrorCallback(error)
+        return Promise.reject(error)
+    },
+)
+
+export {  AdminAxiosBase }
 
 export default AxiosBase

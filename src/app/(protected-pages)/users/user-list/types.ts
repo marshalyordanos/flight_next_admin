@@ -48,6 +48,8 @@ export type Filter = {
     query?: string
     orderBy?: string
     orderDirection?: string
+    roleType?: string[]
+
 }
 
 export type GetUsersListResponse = {

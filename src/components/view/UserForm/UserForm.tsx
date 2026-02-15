@@ -10,6 +10,8 @@ import Select from '@/components/ui/Select'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import { roleService } from '@/services/role/roleService'
+import { Card } from '@/components/ui'
+import { countryService } from '@/services/country /countryService'
 
 export const userFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -48,6 +50,10 @@ const UserForm = ({
         'roles-list',
         () => roleService.getList({ perPage: 100 }),
     )
+    const { data: countriesData } = useSWR(
+        'countries-list',
+        () => countryService.getList({ perPage: 100 }),
+    )
 
     const roleOptions = useMemo(() => {
         if (!rolesData) return []
@@ -59,6 +65,17 @@ const UserForm = ({
             label: role.name,
         }))
     }, [rolesData])
+
+    const countryOptions = useMemo(() => {
+        if (!countriesData) return []
+        const data = (countriesData as { data?: { _id: string; name: string }[] })
+            ?.data
+        const countries = Array.isArray(data) ? data : []
+        return countries.map((country) => ({
+            value: country._id,
+            label: country.name,
+        }))
+    }, [countriesData])
 
     const methods = useForm<UserFormSchema>({
         resolver: zodResolver(userFormSchema),
@@ -79,72 +96,88 @@ const UserForm = ({
     return (
         <FormProvider {...methods}>
             <Form onSubmit={handleSubmit((values) => onFormSubmit?.(values))}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormItem label="Name">
-                        <Input {...register('name')} placeholder="Full name" />
-                    </FormItem>
-                    <FormItem label="Email">
-                        <Input
-                            {...register('email')}
-                            type="email"
-                            placeholder="Email"
-                            disabled={!newUser && !isSalesAgent}
-                        />
-                    </FormItem>
-                    <FormItem label="Role">
-                        <Select
-                            options={roleOptions}
-                            value={roleOptions.find(
-                                (o) => o.value === methods.watch('role'),
-                            )}
-                            onChange={(option) =>
-                                methods.setValue('role', option?.value || '')
-                            }
-                            placeholder="Select role"
-                        />
-                    </FormItem>
-                    <FormItem label="Country ID">
-                        <Input
-                            {...register('country')}
-                            placeholder="Country ID (e.g. b9b12484-4004-428f-83b6-6c02cf958144)"
-                        />
-                    </FormItem>
-                    <FormItem label="Gender">
-                        <Select
-                            options={GENDER_OPTIONS}
-                            value={GENDER_OPTIONS.find(
-                                (o) => o.value === methods.watch('gender'),
-                            )}
-                            onChange={(option) =>
-                                methods.setValue(
-                                    'gender',
-                                    (option?.value as 'MALE' | 'FEMALE' | 'OTHER') || 'MALE',
-                                )
-                            }
-                        />
-                    </FormItem>
-                    {isSalesAgent && (
-                        <>
-                            <FormItem label="Commission Amount">
+                <div className="flex flex-col md:flex-row gap-4">
+                    <div className="gap-4 flex flex-col flex-auto">
+                        <Card>
+                            <div className="font-semibold text-lg mb-4">User Details</div>
+                            <FormItem label="Name">
+                                <Input {...register('name')} placeholder="Full name" />
+                            </FormItem>
+                            <FormItem label="Email">
                                 <Input
-                                    {...register('commissionAmount', {
-                                        valueAsNumber: true,
-                                    })}
-                                    type="number"
-                                    placeholder="10.5"
+                                    {...register('email')}
+                                    type="email"
+                                    placeholder="Email"
+                                    disabled={!newUser && !isSalesAgent}
                                 />
                             </FormItem>
-                            <FormItem label="Monthly Sales Goal">
-                                <Input
-                                    {...register('monthlySalesGoal', {
-                                        valueAsNumber: true,
-                                    })}
-                                    type="number"
-                                    placeholder="5000"
+                            <FormItem label="Role">
+                                <Select
+                                    options={roleOptions}
+                                    value={roleOptions.find(
+                                        (o) => o.value === methods.watch('role'),
+                                    )}
+                                    onChange={(option) =>
+                                        methods.setValue('role', option?.value || '')
+                                    }
+                                    placeholder="Select role"
                                 />
                             </FormItem>
-                        </>
-                    )}
+                        </Card>
+                    </div>
+                    <div className="gap-4 flex flex-col flex-auto">
+                        <Card>
+                            <div className="font-semibold text-lg mb-4">Other Information</div>
+                            <FormItem label="Country">
+                               <Select
+                               options={countryOptions}
+                               value={countryOptions.find(
+                                   (o) => o.value === methods.watch('country'),
+                               )}
+                               onChange={(option) =>
+                                   methods.setValue('country', option?.value || '')
+                               }
+                               placeholder="Select country"
+                            />
+                            </FormItem>
+                            <FormItem label="Gender">
+                                <Select
+                                    options={GENDER_OPTIONS}
+                                    value={GENDER_OPTIONS.find(
+                                        (o) => o.value === methods.watch('gender'),
+                                    )}
+                                    onChange={(option) =>
+                                        methods.setValue(
+                                            'gender',
+                                            (option?.value as 'MALE' | 'FEMALE' | 'OTHER') || 'MALE',
+                                        )
+                                    }
+                                />
+                            </FormItem>
+                            {isSalesAgent && (
+                                <>
+                                    <FormItem label="Commission Amount">
+                                        <Input
+                                            {...register('commissionAmount', {
+                                                valueAsNumber: true,
+                                            })}
+                                            type="number"
+                                            placeholder="10.5"
+                                        />
+                                    </FormItem>
+                                    <FormItem label="Monthly Sales Goal">
+                                        <Input
+                                            {...register('monthlySalesGoal', {
+                                                valueAsNumber: true,
+                                            })}
+                                            type="number"
+                                            placeholder="5000"
+                                        />
+                                    </FormItem>
+                                </>
+                            )}
+                        </Card>
+                    </div>
                 </div>
                 {children}
             </Form>

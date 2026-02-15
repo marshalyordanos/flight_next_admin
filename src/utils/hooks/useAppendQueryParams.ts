@@ -5,6 +5,7 @@ const useAppendQueryParams = () => {
     const router = useRouter()
     const pathname = usePathname()
     const searchParams = useSearchParams()
+    
 
     const onAppendQueryParams = (
         params: Record<string, string | number | boolean>,
