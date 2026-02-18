@@ -47,6 +47,16 @@ const navigationConfig: NavigationTree[] = [
         authority: [],
         subMenu: [],
     },
+    {
+        key: 'booking',
+        path: '/booking',
+        title: 'Booking',
+        translateKey: 'nav.booking',
+        icon: 'booking',
+        type: NAV_ITEM_TYPE_ITEM,
+        authority: [],
+        subMenu: [],
+    },
     // {
     //     key: 'profile',
     //     path: '/profile',
