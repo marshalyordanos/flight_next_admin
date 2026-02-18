@@ -11,7 +11,7 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 import { roleService } from '@/services/role/roleService'
 import { Card } from '@/components/ui'
-import { countryService } from '@/services/country /countryService'
+import { countryService } from '@/services/country/countryService'
 
 export const userFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
