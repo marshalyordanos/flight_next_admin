@@ -11,7 +11,7 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 import { roleService } from '@/services/role/roleService'
 import { Card } from '@/components/ui'
-import { countryService } from '@/services/country /countryService'
+import { countryService } from '@/services/country/countryService'
 
 export const userFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -46,13 +46,11 @@ const UserForm = ({
     children,
     onFormSubmit,
 }: UserFormProps) => {
-    const { data: rolesData } = useSWR(
-        'roles-list',
-        () => roleService.getList({ perPage: 100 }),
+    const { data: rolesData } = useSWR('roles-list', () =>
+        roleService.getList({ perPage: 100 }),
     )
-    const { data: countriesData } = useSWR(
-        'countries-list',
-        () => countryService.getList({ perPage: 100 }),
+    const { data: countriesData } = useSWR('countries-list', () =>
+        countryService.getList({ perPage: 100 }),
     )
 
     const roleOptions = useMemo(() => {
@@ -68,8 +66,9 @@ const UserForm = ({
 
     const countryOptions = useMemo(() => {
         if (!countriesData) return []
-        const data = (countriesData as { data?: { _id: string; name: string }[] })
-            ?.data
+        const data = (
+            countriesData as { data?: { _id: string; name: string }[] }
+        )?.data
         const countries = Array.isArray(data) ? data : []
         return countries.map((country) => ({
             value: country._id,
@@ -99,9 +98,14 @@ const UserForm = ({
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="gap-4 flex flex-col flex-auto">
                         <Card>
-                            <div className="font-semibold text-lg mb-4">User Details</div>
+                            <div className="font-semibold text-lg mb-4">
+                                User Details
+                            </div>
                             <FormItem label="Name">
-                                <Input {...register('name')} placeholder="Full name" />
+                                <Input
+                                    {...register('name')}
+                                    placeholder="Full name"
+                                />
                             </FormItem>
                             <FormItem label="Email">
                                 <Input
@@ -115,10 +119,14 @@ const UserForm = ({
                                 <Select
                                     options={roleOptions}
                                     value={roleOptions.find(
-                                        (o) => o.value === methods.watch('role'),
+                                        (o) =>
+                                            o.value === methods.watch('role'),
                                     )}
                                     onChange={(option) =>
-                                        methods.setValue('role', option?.value || '')
+                                        methods.setValue(
+                                            'role',
+                                            option?.value || '',
+                                        )
                                     }
                                     placeholder="Select role"
                                 />
@@ -127,29 +135,40 @@ const UserForm = ({
                     </div>
                     <div className="gap-4 flex flex-col flex-auto">
                         <Card>
-                            <div className="font-semibold text-lg mb-4">Other Information</div>
+                            <div className="font-semibold text-lg mb-4">
+                                Other Information
+                            </div>
                             <FormItem label="Country">
-                               <Select
-                               options={countryOptions}
-                               value={countryOptions.find(
-                                   (o) => o.value === methods.watch('country'),
-                               )}
-                               onChange={(option) =>
-                                   methods.setValue('country', option?.value || '')
-                               }
-                               placeholder="Select country"
-                            />
+                                <Select
+                                    options={countryOptions}
+                                    value={countryOptions.find(
+                                        (o) =>
+                                            o.value ===
+                                            methods.watch('country'),
+                                    )}
+                                    onChange={(option) =>
+                                        methods.setValue(
+                                            'country',
+                                            option?.value || '',
+                                        )
+                                    }
+                                    placeholder="Select country"
+                                />
                             </FormItem>
                             <FormItem label="Gender">
                                 <Select
                                     options={GENDER_OPTIONS}
                                     value={GENDER_OPTIONS.find(
-                                        (o) => o.value === methods.watch('gender'),
+                                        (o) =>
+                                            o.value === methods.watch('gender'),
                                     )}
                                     onChange={(option) =>
                                         methods.setValue(
                                             'gender',
-                                            (option?.value as 'MALE' | 'FEMALE' | 'OTHER') || 'MALE',
+                                            (option?.value as
+                                                | 'MALE'
+                                                | 'FEMALE'
+                                                | 'OTHER') || 'MALE',
                                         )
                                     }
                                 />

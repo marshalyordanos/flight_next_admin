@@ -44,7 +44,6 @@ export const protectedRoutes: Routes = {
         },
     },
 
-
     '/users/user-list': {
         key: 'users.userList',
         authority: [],
@@ -55,8 +54,7 @@ export const protectedRoutes: Routes = {
         meta: {
             header: {
                 title: 'Edit user',
-                description:
-                    'Manage user details and preferences.',
+                description: 'Manage user details and preferences.',
                 contained: true,
             },
             footer: false,
@@ -69,8 +67,7 @@ export const protectedRoutes: Routes = {
         meta: {
             header: {
                 title: 'Create user',
-                description:
-                    'Add new users to the system.',
+                description: 'Add new users to the system.',
                 contained: true,
             },
             footer: false,
@@ -82,8 +79,7 @@ export const protectedRoutes: Routes = {
         meta: {
             header: {
                 title: 'Create sales agent',
-                description:
-                    'Add new sales agent to the system.',
+                description: 'Add new sales agent to the system.',
                 contained: true,
             },
             footer: false,
@@ -115,6 +111,17 @@ export const protectedRoutes: Routes = {
             header: {
                 title: 'Configuration',
                 description: 'Manage markup rate and tax rate',
+                contained: true,
+            },
+        },
+    },
+    '/booking': {
+        key: 'booking',
+        authority: [],
+        meta: {
+            header: {
+                title: 'Booking',
+                description: 'Manage bookings and reservations',
                 contained: true,
             },
         },

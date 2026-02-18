@@ -4,6 +4,7 @@
         "roles": "Roles",
         "users": "Users",
         "profile": "Profile",
+        "booking": "Booking",
         "configuration": "Configuration",
         "singleMenuItem": "Single menu item",
         "collapseMenu": {
