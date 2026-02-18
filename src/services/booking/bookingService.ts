@@ -1,5 +1,12 @@
 import ApiService from '@/services/ApiService'
-import type { ApiResponse } from '@/@types/auth'
+
+import type { BookingDetailType } from '@/app/@types/bookingDetail'
+// Booking detail response type for detail API
+export type BookingDetailResponse = {
+    statusCode: number
+    message: string
+    data: BookingDetailType
+}
 
 export type BookingValueResponse = {
     statusCode: number
@@ -8,11 +15,11 @@ export type BookingValueResponse = {
 }
 
 export const bookingService = {
-    getAllBookings: async (params?: Record<string, any>) => {
+    getAllBookings: async (params?: Record<string, string>) => {
         let url = '/admin/bookings/get-all'
         if (params) {
             const query = Object.entries(params)
-                .filter(([_, v]) => v !== undefined && v !== null && v !== '')
+                .filter(([, v]) => v !== undefined && v !== null && v !== '')
                 .map(
                     ([k, v]) =>
                         `${encodeURIComponent(k)}=${encodeURIComponent(v)}`,
@@ -28,7 +35,9 @@ export const bookingService = {
     },
 
     getSingleBooking: async (bookingId: string) => {
-        const res = await ApiService.fetchDataWithAxios<BookingValueResponse>({
+        const res = await ApiService.fetchDataWithAxios<
+            import('@/services/booking/bookingService').BookingDetailResponse
+        >({
             url: `/admin/bookings/get/${bookingId}`,
             method: 'GET',
         })
@@ -36,7 +45,7 @@ export const bookingService = {
     },
 
     adminBookFlight: async (value: number) => {
-        const res = await ApiService.fetchDataWithAxios<ApiResponse<unknown>>({
+        const res = await ApiService.fetchDataWithAxios<unknown>({
             url: '/admin/bookings/flight',
             method: 'POST',
             data: { value },

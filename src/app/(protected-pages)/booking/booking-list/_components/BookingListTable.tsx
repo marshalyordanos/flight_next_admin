@@ -1,13 +1,13 @@
 'use client'
 import { useMemo, useCallback } from 'react'
-import useAppendQueryParams from '@/utils/hooks/useAppendQueryParams'
 import DataTable from '@/components/shared/DataTable'
 import Tag from '@/components/ui/Tag'
 import Tooltip from '@/components/ui/Tooltip'
 import { TbEye } from 'react-icons/tb'
 import { useBookingListStore } from '../_store/bookingListStore'
 import { useRouter } from 'next/navigation'
-import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
+import type { ColumnDef, Row } from '@/components/shared/DataTable'
+import type { Booking } from '../_store/bookingListStore'
 
 const statusColor: Record<string, string> = {
     PAID: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
@@ -16,31 +16,34 @@ const statusColor: Record<string, string> = {
     CANCELED: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
-const TravellerColumn = ({ row }: { row: any }) => {
+const TravellerColumn = ({ row }: { row: Booking }) => {
+    const t = row.travellerInfo?.[0] || {}
     return (
         <span>
-            {row.travellerInfo?.[0]?.prefix &&
-            row.travellerInfo?.[0]?.prefix !== ''
-                ? row.travellerInfo?.[0]?.prefix + '.'
-                : ''}{' '}
-            {row.travellerInfo?.[0]?.fullName || '-'}
+            {t.prefix && t.prefix !== '' ? t.prefix + '.' : ''}{' '}
+            {t.fullName || '-'}
         </span>
     )
 }
-const CountryColumn = ({ row }: { row: any }) => {
-    return <span>{row.travellerInfo?.[0]?.passportIssuingCountry || '-'}</span>
+const CountryColumn = ({ row }: { row: Booking }) => {
+    const t = row.travellerInfo?.[0] || {}
+    return <span>{t.passportIssuingCountry || '-'}</span>
 }
-const EmailColumn = ({ row }: { row: any }) => {
-    return <span>{row.travellerInfo?.[0]?.email || '-'}</span>
+const EmailColumn = ({ row }: { row: Booking }) => {
+    const t = row.travellerInfo?.[0] || {}
+    return <span>{t.email || '-'}</span>
 }
-const GenderColumn = ({ row }: { row: any }) => {
-    return <span>{row.travellerInfo?.[0]?.gender || '-'}</span>
+const GenderColumn = ({ row }: { row: Booking }) => {
+    const t = row.travellerInfo?.[0] || {}
+    return <span>{t.gender || '-'}</span>
 }
-const PhoneColumn = ({ row }: { row: any }) => {
-    return <span>{row.travellerInfo?.[0]?.phoneNumber || '-'}</span>
+const PhoneColumn = ({ row }: { row: Booking }) => {
+    const t = row.travellerInfo?.[0] || {}
+    return <span>{t.phoneNumber || '-'}</span>
 }
-const PassengerTypeColumn = ({ row }: { row: any }) => {
-    return <span>{row.travellerInfo?.[0]?.passengerType || '-'}</span>
+const PassengerTypeColumn = ({ row }: { row: Booking }) => {
+    const t = row.travellerInfo?.[0] || {}
+    return <span>{t.passengerType || '-'}</span>
 }
 
 const ActionColumn = ({ onViewDetail }: { onViewDetail: () => void }) => {
@@ -59,11 +62,33 @@ const ActionColumn = ({ onViewDetail }: { onViewDetail: () => void }) => {
     )
 }
 
-const BookingListTable = ({
+interface BookingListTableProps {
+    bookingListTotal: number
+    pageIndex?: number
+    pageSize?: number
+    totalPage?: number
+    orderBy?: string
+    orderDirection?: string
+    availableOrderBy?: string[]
+    availableOrderDirection?: string[]
+    onPaginationChange: (page: number) => void
+    onSelectChange: (perPage: number) => void
+    onSort: (sort: { key: string; order: string }) => void
+}
+
+const BookingListTable: React.FC<BookingListTableProps> = ({
     bookingListTotal,
     pageIndex = 1,
     pageSize = 10,
-}: any) => {
+    // totalPage = 1, // removed unused
+    // orderBy = 'createdAt', // removed unused
+    // orderDirection = 'asc', // removed unused
+    // availableOrderBy = ['createdAt'], // removed unused
+    // availableOrderDirection = ['asc', 'desc'], // removed unused
+    onPaginationChange,
+    onSelectChange,
+    onSort,
+}) => {
     const router = useRouter()
     const bookingList = useBookingListStore((state) => state.bookingList)
     const selectedBooking = useBookingListStore(
@@ -79,16 +104,16 @@ const BookingListTable = ({
     const setSelectAllBooking = useBookingListStore(
         (state) => state.setSelectAllBooking,
     )
-    const { onAppendQueryParams } = useAppendQueryParams()
+    // const { onAppendQueryParams } = useAppendQueryParams() // removed unused
 
     const handleViewDetails = useCallback(
-        (booking: any) => {
+        (booking: Booking) => {
             router.push(`/booking/booking-detail/${booking._id}`)
         },
         [router],
     )
 
-    const columns: ColumnDef<any>[] = useMemo(
+    const columns: ColumnDef<Booking>[] = useMemo(
         () => [
             {
                 header: 'Traveller Name',
@@ -205,31 +230,13 @@ const BookingListTable = ({
         [handleViewDetails],
     )
 
-    const handlePaginationChange = (page: number) => {
-        onAppendQueryParams({
-            page: String(page),
-        })
-    }
+    // Use parent-provided handlers for pagination, select, and sort
 
-    const handleSelectChange = (value: number) => {
-        onAppendQueryParams({
-            perPage: String(value),
-            page: '1',
-        })
-    }
-
-    const handleSort = (sort: OnSortParam) => {
-        onAppendQueryParams({
-            orderBy: sort.key,
-            orderDirection: sort.order || '',
-        })
-    }
-
-    const handleRowSelect = (checked: boolean, row: any) => {
+    const handleRowSelect = (checked: boolean, row: Booking) => {
         setSelectedBooking(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<any>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<Booking>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
             setSelectAllBooking(originalRows)
@@ -253,9 +260,11 @@ const BookingListTable = ({
             checkboxChecked={(row) =>
                 selectedBooking.some((selected) => selected._id === row._id)
             }
-            onPaginationChange={handlePaginationChange}
-            onSelectChange={handleSelectChange}
-            onSort={handleSort}
+            onPaginationChange={onPaginationChange}
+            onSelectChange={onSelectChange}
+            onSort={(sort) =>
+                onSort({ key: String(sort.key), order: sort.order })
+            }
             onCheckBoxChange={handleRowSelect}
             onIndeterminateCheckBoxChange={handleAllRowSelect}
         />

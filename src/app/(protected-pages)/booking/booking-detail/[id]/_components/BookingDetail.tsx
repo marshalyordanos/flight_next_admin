@@ -7,9 +7,6 @@ import Tag from '@/components/ui/Tag'
 import AdaptiveCard from '@/components/shared/AdaptiveCard'
 import {
     HiOutlineUser,
-    HiOutlineMail,
-    HiOutlinePhone,
-    HiOutlineCalendar,
     HiOutlineIdentification,
     HiOutlineCurrencyDollar,
 } from 'react-icons/hi'
@@ -17,17 +14,23 @@ import {
 const labelClass = 'font-semibold text-gray-600 dark:text-gray-300 text-sm mb-1'
 const valueClass = 'text-gray-900 dark:text-gray-100 text-base mb-2 break-all'
 
+// Types moved to shared file
+import type { BookingDetailType } from '@/app/@types/bookingDetail'
+
+import type { BookingDetailResponse } from '@/services/booking/bookingService'
+
 const BookingDetail = ({ bookingId }: { bookingId: string }) => {
-    const [bookingDetail, setBookingDetail] = React.useState<any>(null)
+    const [bookingDetail, setBookingDetail] =
+        React.useState<BookingDetailType | null>(null)
     const [isLoading, setIsLoading] = React.useState(true)
     useEffect(() => {
         let cancelled = false
         setIsLoading(true)
         bookingService
             .getSingleBooking(bookingId)
-            .then((res: any) => {
+            .then((res: BookingDetailResponse) => {
                 if (!cancelled) {
-                    setBookingDetail(res?.data)
+                    setBookingDetail(res?.data ?? null)
                 }
             })
             .catch(() => {
@@ -82,16 +85,23 @@ const BookingDetail = ({ bookingId }: { bookingId: string }) => {
                     <div className="flex flex-col items-end">
                         <div className="text-sm text-gray-500">
                             Created:{' '}
-                            {new Date(bookingDetail.createdAt).toLocaleString()}
+                            {bookingDetail.createdAt
+                                ? new Date(
+                                      bookingDetail.createdAt,
+                                  ).toLocaleString()
+                                : '-'}
                         </div>
                         <div className="text-sm text-gray-500">
                             Updated:{' '}
-                            {new Date(bookingDetail.updatedAt).toLocaleString()}
+                            {bookingDetail.updatedAt
+                                ? new Date(
+                                      bookingDetail.updatedAt,
+                                  ).toLocaleString()
+                                : '-'}
                         </div>
                     </div>
                 </div>
 
-                {/* Booker Info */}
                 <div className="mb-6">
                     <div className="text-lg font-semibold mb-2 flex items-center gap-2">
                         <HiOutlineUser /> Booker Information
