@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import { useBookingListStore } from '../_store/bookingListStore'
 import Container from '@/components/shared/Container'
 import AdaptiveCard from '@/components/shared/AdaptiveCard'
+import React from 'react'
 import BookingListTable from './BookingListTable'
 import Loading from '@/components/shared/Loading'
 import { bookingService } from '@/services/booking/bookingService'
@@ -46,15 +47,76 @@ const BookingList = () => {
 
         bookingService
             .getAllBookings(params)
-            .then((res: any) => {
-                console.log(res, 'backend responseopenspnfsef')
+            .then((res) => {
+                // Integrate backend pagination and filter metadata
                 const bookings = Array.isArray(res)
                     ? res
                     : Array.isArray(res.data)
                       ? res.data
                       : []
+                // Accept both _metadata or metadata for pagination (backend may differ)
+                type Pagination = {
+                    orderBy?: string
+                    orderDirection?: string
+                    page?: number
+                    perPage?: number
+                    [key: string]: unknown
+                }
+                let pagination: Pagination = {}
+                if (
+                    res &&
+                    typeof res === 'object' &&
+                    '_metadata' in res &&
+                    res._metadata &&
+                    typeof res._metadata === 'object' &&
+                    'pagination' in res._metadata &&
+                    typeof res._metadata.pagination === 'object'
+                ) {
+                    pagination = res._metadata.pagination as Pagination
+                } else if (
+                    res &&
+                    typeof res === 'object' &&
+                    'metadata' in res &&
+                    res.metadata &&
+                    typeof res.metadata === 'object' &&
+                    'pagination' in res.metadata &&
+                    typeof res.metadata.pagination === 'object'
+                ) {
+                    pagination = res.metadata.pagination as Pagination
+                }
                 if (!cancelled) {
                     setBookingList(bookings)
+                    setFilterData({
+                        search: params.search || '',
+                        paymentStatus: params.paymentStatus || '',
+                        orderBy: pagination.orderBy || 'createdAt',
+                        orderDirection: pagination.orderDirection || '',
+                        page: pagination.page || 1,
+                        perPage: pagination.perPage || 10,
+                        total:
+                            typeof pagination.total === 'number'
+                                ? pagination.total
+                                : bookings.length,
+                        totalPage:
+                            typeof pagination.totalPage === 'number'
+                                ? pagination.totalPage
+                                : 1,
+                        availableOrderBy: Array.isArray(
+                            pagination.availableOrderBy,
+                        )
+                            ? pagination.availableOrderBy
+                            : ['createdAt'],
+                        availableOrderDirection: Array.isArray(
+                            pagination.availableOrderDirection,
+                        )
+                            ? pagination.availableOrderDirection
+                            : ['asc', 'desc'],
+                        availableSearch: Array.isArray(
+                            pagination.availableSearch,
+                        )
+                            ? pagination.availableSearch
+                            : [],
+                    })
                 }
             })
             .catch(() => {
@@ -77,9 +139,55 @@ const BookingList = () => {
                     <BookingListTableTools />
                     <Loading loading={isInitialLoading} type="cover">
                         <BookingListTable
-                            bookingListTotal={total}
-                            pageIndex={filterData.page || 1}
-                            pageSize={filterData.perPage || 10}
+                            bookingListTotal={Number(filterData.total ?? total)}
+                            pageIndex={Number(filterData.page ?? 1)}
+                            pageSize={Number(filterData.perPage ?? 10)}
+                            totalPage={Number(filterData.totalPage ?? 1)}
+                            orderBy={String(filterData.orderBy ?? 'createdAt')}
+                            orderDirection={String(
+                                filterData.orderDirection ?? 'asc',
+                            )}
+                            availableOrderBy={
+                                Array.isArray(filterData.availableOrderBy)
+                                    ? filterData.availableOrderBy
+                                    : []
+                            }
+                            availableOrderDirection={
+                                Array.isArray(
+                                    filterData.availableOrderDirection,
+                                )
+                                    ? filterData.availableOrderDirection
+                                    : []
+                            }
+                            onPaginationChange={(page: number) => {
+                                const params = new URLSearchParams(
+                                    window.location.search,
+                                )
+                                params.set('page', String(page))
+                                window.location.search = params.toString()
+                            }}
+                            onSelectChange={(perPage: number) => {
+                                const params = new URLSearchParams(
+                                    window.location.search,
+                                )
+                                params.set('perPage', String(perPage))
+                                params.set('page', '1')
+                                window.location.search = params.toString()
+                            }}
+                            onSort={({
+                                key,
+                                order,
+                            }: {
+                                key: string
+                                order: string
+                            }) => {
+                                const params = new URLSearchParams(
+                                    window.location.search,
+                                )
+                                params.set('orderBy', String(key))
+                                params.set('orderDirection', String(order))
+                                window.location.search = params.toString()
+                            }}
                         />
                     </Loading>
                 </div>

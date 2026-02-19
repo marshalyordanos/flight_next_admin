@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import Button from '@/components/ui/Button'
 import Dialog from '@/components/ui/Dialog'
-import Input from '@/components/ui/Input'
 import Select from '@/components/ui/Select'
 import { Form, FormItem } from '@/components/ui/Form'
-import { useBookingListStore } from '../_store/bookingListStore'
 import useAppendQueryParams from '@/utils/hooks/useAppendQueryParams'
 import { TbFilter } from 'react-icons/tb'
 import { useForm, Controller } from 'react-hook-form'
@@ -20,7 +18,7 @@ const PAYMENT_STATUS_OPTIONS = [
 const BookingListTableFilter = () => {
     const [dialogIsOpen, setIsOpen] = useState(false)
     const { onAppendQueryParams } = useAppendQueryParams()
-    const setBookingList = useBookingListStore((state) => state.setBookingList)
+    // const setBookingList = useBookingListStore((state) => state.setBookingList)
 
     const openDialog = () => setIsOpen(true)
     const onDialogClose = () => setIsOpen(false)
@@ -33,7 +31,12 @@ const BookingListTableFilter = () => {
         },
     })
 
-    const onSubmit = (values: any) => {
+    interface FilterForm {
+        paymentStatus: string
+        orderBy: string
+        orderDirection: string
+    }
+    const onSubmit = (values: FilterForm) => {
         onAppendQueryParams({
             paymentStatus: values.paymentStatus,
             orderBy: values.orderBy,
@@ -80,7 +83,7 @@ const BookingListTableFilter = () => {
                         <Controller
                             name="orderBy"
                             control={control}
-                            render={({ field }) => (
+                            render={() => (
                                 <Select
                                     options={[
                                         {

@@ -1,5 +1,14 @@
 import { create } from 'zustand'
 
+export type TravellerInfo = {
+    fullName: string
+    prefix?: string
+    passportIssuingCountry?: string
+    email?: string
+    gender?: string
+    phoneNumber?: string
+    passengerType?: string
+}
 export type Booking = {
     _id: string
     deleted: boolean
@@ -8,11 +17,11 @@ export type Booking = {
     bookedBy: string
     pnr: string
     bookerType: string
-    travellerInfo: Array<{ fullName: string }>
+    travellerInfo: TravellerInfo[]
     paymentStatus: string
     basePayment: string
     userPaymentCurrency: string
-    [key: string]: any
+    userPaymentExpirationDate?: string
 }
 
 export type BookingListFilter = {
@@ -22,6 +31,11 @@ export type BookingListFilter = {
     orderDirection?: string
     page?: number
     perPage?: number
+    total?: number
+    availableOrderDirection?: string[]
+    availableOrderBy?: string[]
+    totalPage?: number
+    availableSearch?: string[]
 }
 
 export type BookingListState = {
@@ -46,6 +60,10 @@ const initialFilterData: BookingListFilter = {
     orderDirection: '',
     page: 1,
     perPage: 10,
+    total: 0,
+    availableOrderDirection: ['asc', 'desc'],
+    availableOrderBy: ['createdAt'],
+    totalPage: 1,
 }
 
 const initialState: BookingListState = {
