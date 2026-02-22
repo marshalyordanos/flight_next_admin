@@ -9,8 +9,8 @@ type UserDetailsProps = {
     data: User
 }
 
-// Unified icon color (muted slate-blue tone)
-const iconClass = "w-5 h-5 text-blue-500"
+// Unified icon color (black)
+const iconClass = "w-5 h-5 text-black"
 
 // Subtler, professional badge color palette
 const badgeColor = (status: string) => {
