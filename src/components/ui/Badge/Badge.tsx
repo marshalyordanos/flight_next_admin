@@ -47,7 +47,7 @@ const Badge = (props: BadgeProps) => {
                     {...rest}
                 >
                     <span
-                        className={classNames(badgeClass, 'badge-inner')}
+                        // className={classNames(badgeClass, 'badge-inner')}
                         style={badgeStyle}
                     >
                         {typeof content === 'number' && content > maxCount
