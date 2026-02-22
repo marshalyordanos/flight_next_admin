@@ -28,13 +28,13 @@ const validationSchema: ZodType<FormSchema> = z.object({
     roleType: z.array(z.string()).optional().default([]),
 })
 
-const STATIC_ROLE_OPTIONS = [
-    { value: 'ADMIN', label: 'ADMIN' },
-    { value: 'SALES_AGENT', label: 'SALES_AGENT' },
-    { value: 'SUPER_ADMIN', label: 'SUPER_ADMIN' },
-    { value: 'SUB_ADMIN', label: 'SUB_ADMIN' },
-    { value: 'USER', label: 'USER' },
-]
+// const STATIC_ROLE_OPTIONS = [
+//     { value: 'ADMIN', label: 'ADMIN' },
+//     { value: 'SALES_AGENT', label: 'SALES_AGENT' },
+//     { value: 'SUPER_ADMIN', label: 'SUPER_ADMIN' },
+//     { value: 'SUB_ADMIN', label: 'SUB_ADMIN' },
+//     { value: 'USER', label: 'USER' },
+// ]
 
 const UserListTableFilter = () => {
     const [dialogIsOpen, setIsOpen] = useState(false)
