@@ -104,6 +104,17 @@ export const protectedRoutes: Routes = {
             },
         },
     },
+    '/users/sales-agent-list': {
+        key: 'users.salesAgentList',
+        authority: [],
+        // meta: {
+        //     header: {
+        //         title: 'Sales Agent List',
+        //         description: 'Manage sales agent list',
+        //         contained: true,
+        //     },
+        // },
+    },
     '/configuration': {
         key: 'configuration',
         authority: [],
@@ -115,6 +126,7 @@ export const protectedRoutes: Routes = {
             },
         },
     },
+
     '/booking': {
         key: 'booking',
         authority: [],

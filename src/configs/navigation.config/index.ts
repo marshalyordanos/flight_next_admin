@@ -38,6 +38,16 @@ const navigationConfig: NavigationTree[] = [
         subMenu: [],
     },
     {
+        key: 'sales-agent-list',
+        path: '/users/sales-agent-list',
+        title: 'Sales Agent',
+        translateKey: 'nav.sales-agent-list',
+        icon: 'users',
+        type: NAV_ITEM_TYPE_ITEM,
+        authority: [],
+        subMenu: [],
+    },
+    {
         key: 'configuration',
         path: '/configuration',
         title: 'Configuration',
