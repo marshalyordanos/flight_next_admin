@@ -21,6 +21,10 @@ const UserListPageContent = () => {
     const orderBy = searchParams.get('orderBy') || 'createdAt'
     const orderDirection =
         (searchParams.get('orderDirection') as 'asc' | 'desc') || 'asc'
+    const roleTypeParam = searchParams.get('roleType') || undefined
+    const roleType = roleTypeParam
+        ? roleTypeParam.split(',').filter(Boolean)
+        : undefined
 
     const [loading, setLoading] = useState(true)
     const [list, setList] = useState<User[]>([])
@@ -31,12 +35,13 @@ const UserListPageContent = () => {
         setLoading(true)
 
         userService
-            .getList({
+            .getSalesAgentList({
                 page: pageIndex,
                 perPage: pageSize,
                 search,
                 orderBy,
                 orderDirection,
+                roleType,
             })
             .then((res) => {
                 if (!cancelled) {
@@ -57,7 +62,7 @@ const UserListPageContent = () => {
         return () => {
             cancelled = true
         }
-    }, [pageIndex, pageSize, search, orderBy, orderDirection])
+    }, [pageIndex, pageSize, search, orderBy, orderDirection, roleTypeParam])
 
     if (loading) {
         return (

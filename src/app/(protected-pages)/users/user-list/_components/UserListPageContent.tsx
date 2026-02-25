@@ -19,6 +19,7 @@ const UserListPageContent = () => {
     const pageSize = parseInt(searchParams.get('pageSize') || '10')
     const search = searchParams.get('search') || undefined
     const orderBy = searchParams.get('orderBy') || 'createdAt'
+    const roleTypeParam = searchParams.get('roleType') || undefined
     const orderDirection =
         (searchParams.get('orderDirection') as 'asc' | 'desc') || 'asc'
 
@@ -37,6 +38,7 @@ const UserListPageContent = () => {
                 search,
                 orderBy,
                 orderDirection,
+                roleType: roleTypeParam ? roleTypeParam.split(',').filter(Boolean) : undefined,
             })
             .then((res) => {
                 if (!cancelled) {
@@ -57,7 +59,7 @@ const UserListPageContent = () => {
         return () => {
             cancelled = true
         }
-    }, [pageIndex, pageSize, search, orderBy, orderDirection])
+    }, [pageIndex, pageSize, search, orderBy, orderDirection, roleTypeParam])
 
     if (loading) {
         return (

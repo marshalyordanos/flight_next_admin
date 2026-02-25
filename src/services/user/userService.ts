@@ -69,6 +69,34 @@ export const userService = {
         })
         return res
     },
+    getSalesAgentList: async (params?: UserListParams) => {
+        const searchParams = new URLSearchParams()
+        if (params?.page) searchParams.set('page', String(params.page))
+        if (params?.perPage) searchParams.set('perPage', String(params.perPage))
+        if (params?.orderBy) searchParams.set('orderBy', params.orderBy)
+        if (params?.orderDirection)
+            searchParams.set('orderDirection', params.orderDirection)
+        if (params?.search) searchParams.set('search', params.search)
+        if (params?.roleType?.length) {
+            searchParams.set('roleType', params.roleType.join(','))
+        } else {
+            searchParams.set('roleType', 'SALES_AGENT')
+        }
+        const query = searchParams.toString()
+        const url = `/admin/user/list${query ? `?${query}` : ''}`
+
+        const headers: Record<string, string> = {}
+        if (params?.accessToken) {
+            headers.Authorization = `Bearer ${params.accessToken}`
+        }
+
+        const res = await ApiService.fetchDataWithAxios<GetUsersListResponse>({
+            url,
+            method: 'GET',
+            headers,
+        })
+        return res
+    },
 
     getOne: async (userId: string, accessToken?: string) => {
         const headers: Record<string, string> = {}
