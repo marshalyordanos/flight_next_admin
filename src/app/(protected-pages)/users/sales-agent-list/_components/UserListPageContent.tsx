@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Container from '@/components/shared/Container'
 import AdaptiveCard from '@/components/shared/AdaptiveCard'
@@ -22,9 +22,13 @@ const UserListPageContent = () => {
     const orderDirection =
         (searchParams.get('orderDirection') as 'asc' | 'desc') || 'asc'
     const roleTypeParam = searchParams.get('roleType') || undefined
-    const roleType = roleTypeParam
-        ? roleTypeParam.split(',').filter(Boolean)
-        : undefined
+    const roleType = useMemo(
+        () =>
+            roleTypeParam
+                ? roleTypeParam.split(',').filter(Boolean)
+                : undefined,
+        [roleTypeParam],
+    )
 
     const [loading, setLoading] = useState(true)
     const [list, setList] = useState<User[]>([])
@@ -62,7 +66,7 @@ const UserListPageContent = () => {
         return () => {
             cancelled = true
         }
-    }, [pageIndex, pageSize, search, orderBy, orderDirection, roleTypeParam])
+    }, [pageIndex, pageSize, search, orderBy, orderDirection, roleType])
 
     if (loading) {
         return (
