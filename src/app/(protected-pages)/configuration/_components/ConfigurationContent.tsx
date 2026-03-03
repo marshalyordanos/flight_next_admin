@@ -785,7 +785,7 @@ const AirlineMarkupTableSection = ({
 // --- Main ConfigurationContent ---
 
 const ConfigurationContent = () => {
-    const [activeTab, setActiveTab] = useState('markup')
+    const [activeTab, setActiveTab] = useState('airline-markup')
     const [markupValue, setMarkupValue] = useState<number | null>(null)
     const [taxValue, setTaxValue] = useState<number | null>(null)
     const [markupLoading, setMarkupLoading] = useState(true)
